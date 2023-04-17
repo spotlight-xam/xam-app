@@ -7,15 +7,15 @@ import {
 import * as main from "@screens/main";
 
 import {
-  MainTabNavigation,
-  MainTabNavigationOptions,
-  MainTabNavigationParamsList,
-} from "./Main.tab.navigation";
+  MainDrawerNavigation,
+  MainDrawerNavigationOptions,
+  MainDrawerNavigationParamsList,
+} from "./Main.drawer.navigation";
 
 export type MainStackNavigationProps =
   NativeStackNavigationProp<MainStackNavigationParamsList>;
 export type MainStackNavigationParamsList = {
-  MainTabNavigation: NavigatorScreenParams<MainTabNavigationParamsList>;
+  MainDrawerNavigation: NavigatorScreenParams<MainDrawerNavigationParamsList>;
 
   TodoCreateScreen: main.todo.TodoCreateScreenParams;
 };
@@ -25,9 +25,9 @@ export function MainStackNavigation() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="MainTabNavigation"
-        component={MainTabNavigation}
-        options={MainTabNavigationOptions}
+        name="MainDrawerNavigation"
+        component={MainDrawerNavigation}
+        options={MainDrawerNavigationOptions}
       />
 
       <Stack.Screen

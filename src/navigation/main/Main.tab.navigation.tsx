@@ -2,7 +2,7 @@ import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
-import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
+import { DrawerNavigationOptions } from "@react-navigation/drawer";
 
 import * as main from "@screens/main";
 
@@ -14,7 +14,7 @@ export type MainTabNavigationParamsList = {
 };
 
 const Tab = createBottomTabNavigator<MainTabNavigationParamsList>();
-export const MainTabNavigationOptions: NativeStackNavigationOptions = {
+export const MainTabNavigationOptions: DrawerNavigationOptions = {
   headerShown: false,
 };
 export function MainTabNavigation() {
