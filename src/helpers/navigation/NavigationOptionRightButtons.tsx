@@ -1,9 +1,10 @@
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 
 import {
   Icon,
   IconProps,
   IconUnion,
+  Pressable,
   Text,
   TextProps,
 } from "@components/common";
@@ -11,7 +12,6 @@ import { MainStackNavigationProps } from "@navigation/main";
 
 export type RightButton = {
   onPress?: (navigation: MainStackNavigationProps) => void;
-  anchorRef?: React.RefObject<TouchableOpacity>;
 } & (
   | { icon: IconUnion; iconProps?: Partial<IconProps> }
   | { label: string; labelProps?: Partial<TextProps> }
@@ -32,9 +32,8 @@ export function NavigationOptionRightButtons({
         <View style={{ flexDirection: "row", paddingRight }}>
           {rightButtons.map((rightButton, index) =>
             "icon" in rightButton ? (
-              <TouchableOpacity
+              <Pressable
                 key={index}
-                ref={rightButton.anchorRef}
                 disabled={!rightButton.onPress}
                 onPress={() =>
                   rightButton.onPress && rightButton.onPress(navigation)
@@ -52,18 +51,17 @@ export function NavigationOptionRightButtons({
                   name={rightButton.icon}
                   {...rightButton.iconProps}
                 />
-              </TouchableOpacity>
+              </Pressable>
             ) : (
-              <TouchableOpacity
+              <Pressable
                 key={index}
-                ref={rightButton.anchorRef}
                 disabled={!rightButton.onPress}
                 onPress={() =>
                   rightButton.onPress && rightButton.onPress(navigation)
                 }
               >
                 <Text {...rightButton.labelProps}>{rightButton.label}</Text>
-              </TouchableOpacity>
+              </Pressable>
             )
           )}
         </View>

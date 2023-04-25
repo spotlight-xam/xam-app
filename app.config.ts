@@ -69,6 +69,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       favicon: "./assets/favicon.png",
     },
     plugins: [
+      ["@config-plugins/detox"],
       ["expo-updates", { username: "outsung" }],
       [
         "expo-dynamic-app-icon",

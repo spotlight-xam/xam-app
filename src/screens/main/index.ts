@@ -1,2 +1,2 @@
-export * as todo from "./todo";
-export * as store from "./store";
+export * as message from "./message";
+export * as post from "./post";

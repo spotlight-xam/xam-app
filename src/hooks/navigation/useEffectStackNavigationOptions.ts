@@ -6,7 +6,7 @@ import {
 } from "@helpers/navigation";
 import { MainStackNavigationProps } from "@navigation/main";
 
-import { useNavigation } from "./useNavigation";
+import { useMainNavigation } from "./useNavigation";
 
 export function useEffectStackNavigationOptions(
   effect: (
@@ -15,7 +15,7 @@ export function useEffectStackNavigationOptions(
   deps: React.DependencyList | undefined,
   _navigation?: MainStackNavigationProps
 ) {
-  const navigation = useNavigation();
+  const navigation = useMainNavigation();
 
   const setOptions = (props: CreateNativeStackNavigationOptionsProps) => {
     const option = createNativeStackNavigationOptions(props)({

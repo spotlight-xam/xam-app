@@ -11,7 +11,6 @@ import {
   fontStyles,
   fontWeights,
 } from "@constants";
-import { useFontScaleContext } from "@contexts/FontScale.context";
 import { colors } from "@theme";
 
 export interface TextProps extends _TextProps {
@@ -47,7 +46,7 @@ export interface TextProps extends _TextProps {
   fontStyle?: FontStyleUnion;
 }
 
-function Text({
+export function Text({
   fixed = true,
   children,
   underline,
@@ -58,15 +57,10 @@ function Text({
   fontWeight = "medium",
   ...props
 }: TextProps) {
-  const fontScale = useFontScaleContext();
-
   const textStyle = useMemo(() => {
     const fontSize = fontStyles[fontStyle];
-    return [
-      { fontSize: fontSize * fontScale },
-      { fontFamily: fontWeights[fontWeight] },
-    ];
-  }, [fontStyle, fontWeight, fontScale]);
+    return [{ fontSize }, { fontFamily: fontWeights[fontWeight] }];
+  }, [fontStyle, fontWeight]);
 
   const normalizedChildren = useMemo(
     () =>
@@ -97,5 +91,3 @@ function Text({
     </_Text>
   );
 }
-
-export default Text;

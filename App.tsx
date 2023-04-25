@@ -5,6 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { SplashScreen } from "@components/app";
 import { AppNavigation } from "@navigation/App.navigation";
+import { TestingGenerateProvider } from "@providers";
 import { queryClient, queryClientPersister } from "@queryClient/index";
 
 if (
@@ -34,8 +35,10 @@ export default function App() {
         }}
       >
         <SafeAreaProvider>
-          <StatusBar style="auto" />
-          <AppNavigation />
+          <TestingGenerateProvider>
+            <StatusBar style="auto" />
+            <AppNavigation />
+          </TestingGenerateProvider>
         </SafeAreaProvider>
       </PersistQueryClientProvider>
     </SplashScreen>

@@ -17,7 +17,7 @@ export type MainStackNavigationProps =
 export type MainStackNavigationParamsList = {
   MainDrawerNavigation: NavigatorScreenParams<MainDrawerNavigationParamsList>;
 
-  TodoCreateScreen: main.todo.TodoCreateScreenParams;
+  MessageListScreen: main.message.MessageListScreenParams;
 };
 
 const Stack = createNativeStackNavigator<MainStackNavigationParamsList>();
@@ -26,14 +26,14 @@ export function MainStackNavigation() {
     <Stack.Navigator>
       <Stack.Screen
         name="MainDrawerNavigation"
-        component={MainDrawerNavigation}
         options={MainDrawerNavigationOptions}
+        component={MainDrawerNavigation}
       />
 
       <Stack.Screen
-        name="TodoCreateScreen"
-        component={main.todo.TodoCreateScreen}
-        options={main.todo.TodoCreateScreenOptions}
+        name="MessageListScreen"
+        options={main.message.MessageListScreenOptions}
+        component={main.message.MessageListScreen}
       />
     </Stack.Navigator>
   );

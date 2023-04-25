@@ -1,7 +1,6 @@
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
-import { TouchableOpacity } from "react-native";
 
-import { Icon } from "@components/common";
+import { Icon, Pressable } from "@components/common";
 import { MainStackNavigationProps } from "@navigation/main";
 
 import { NavigationOptionHeaderTitle } from "./NavigationOptionHeaderTitle";
@@ -33,12 +32,12 @@ export function createNativeStackNavigationOptions({
     headerShown,
     headerLeft: ({ canGoBack }) =>
       canGoBack ? (
-        <TouchableOpacity
+        <Pressable
           style={{ width: 32, height: 44, justifyContent: "center" }}
           onPress={() => navigation.goBack()}
         >
           <Icon size={24} name="BackIcon" />
-        </TouchableOpacity>
+        </Pressable>
       ) : null,
     headerRight: NavigationOptionRightButtons({
       navigation,

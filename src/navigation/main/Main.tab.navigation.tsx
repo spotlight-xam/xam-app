@@ -9,8 +9,8 @@ import * as main from "@screens/main";
 export type MainTabNavigationProps =
   BottomTabNavigationProp<MainTabNavigationParamsList>;
 export type MainTabNavigationParamsList = {
-  TodoListScreen: main.todo.TodoListScreenParams;
-  StoreListScreen: main.store.StoreListScreenParams;
+  MessageRoomListScreen: main.message.MessageRoomListScreenParams;
+  PostListScreen: main.post.PostListScreenParams;
 };
 
 const Tab = createBottomTabNavigator<MainTabNavigationParamsList>();
@@ -19,16 +19,16 @@ export const MainTabNavigationOptions: DrawerNavigationOptions = {
 };
 export function MainTabNavigation() {
   return (
-    <Tab.Navigator initialRouteName="TodoListScreen">
+    <Tab.Navigator initialRouteName="PostListScreen">
       <Tab.Screen
-        name="TodoListScreen"
-        options={main.todo.TodoListScreenOptions}
-        component={main.todo.TodoListScreen}
+        name="MessageRoomListScreen"
+        options={main.message.MessageRoomListScreenOptions}
+        component={main.message.MessageRoomListScreen}
       />
       <Tab.Screen
-        name="StoreListScreen"
-        options={main.store.StoreListScreenOptions}
-        component={main.store.StoreListScreen}
+        name="PostListScreen"
+        options={main.post.PostListScreenOptions}
+        component={main.post.PostListScreen}
       />
     </Tab.Navigator>
   );
