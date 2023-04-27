@@ -13,9 +13,7 @@ jobs:
       - name: 🏗 Setup Expo
         uses: expo/expo-github-action@v7
         with:
-          eas-version: ${{ inputs.eas-version }}
-          expo-version: ${{ inputs.expo-version }}
-          token: ${{ inputs.expo-token }}
+          token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 🏗 Setup repository
         uses: actions/checkout@v3
