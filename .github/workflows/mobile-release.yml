@@ -16,8 +16,12 @@ jobs:
           eas-version: ${{ inputs.eas-version }}
           expo-version: ${{ inputs.expo-version }}
           token: ${{ inputs.expo-token }}
+
       - name: 🏗 Setup repository
         uses: actions/checkout@v3
+
+      - name: 📦 Install dependencies
+        run: yarn install
 
       - name: 👷 Build packages
         run: yarn build
