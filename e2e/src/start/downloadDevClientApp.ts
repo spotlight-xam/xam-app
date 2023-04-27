@@ -1,7 +1,10 @@
+import { config } from "dotenv";
 import { https } from "follow-redirects";
 import * as fs from "fs";
 import * as path from "path";
 import * as unzipper from "unzipper";
+
+config();
 
 const devClientFolderPath = path.join(process.cwd(), "e2e/dev-client");
 
@@ -19,7 +22,7 @@ export async function downloadDevClientApp() {
   const token = process.env["GITHUB_API_TOKEN"];
   const owner = "spotlight-xam";
   const repo = "xam-app";
-  const version = "v1.0.0";
+  const version = "v1.0.1";
 
   const options = {
     headers: { Authorization: `token ${token}`, "User-Agent": "request" },
