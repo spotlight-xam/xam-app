@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: 🏗 Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          eas-version: ${{ inputs.eas-version }}
+          expo-version: ${{ inputs.expo-version }}
+          token: ${{ inputs.expo-token }}
       - name: 🏗 Setup repository
         uses: actions/checkout@v3
 
