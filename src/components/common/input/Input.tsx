@@ -2,16 +2,21 @@ import { TextInput, TextInputProps } from "react-native";
 
 import { useTestingGenerateGetUuid } from "@providers";
 
+import { Text } from "../text";
+
 export function Input(props: TextInputProps) {
-  const testID = useTestingGenerateGetUuid();
+  const [testID, record] = useTestingGenerateGetUuid("typing");
 
   const onChangeText = (text: string) => {
-    if (testID) {
-      console.log("[recode] id: " + testID);
-    }
+    record();
 
     props.onChangeText && props.onChangeText(text);
   };
 
-  return <TextInput {...props} testID={testID} onChangeText={onChangeText} />;
+  return (
+    <>
+      <Text>{testID}</Text>
+      <TextInput {...props} testID={testID} onChangeText={onChangeText} />
+    </>
+  );
 }

@@ -36,6 +36,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     slug: "xam",
     scheme: scheme[APP_VARIANT],
     version,
+    owner: "spotlight-xam",
     runtimeVersion: version,
     orientation: "portrait",
     icon: "./assets/icon.png",

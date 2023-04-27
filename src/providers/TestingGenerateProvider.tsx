@@ -1,11 +1,14 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { v4 } from "uuid";
-
-import { Text } from "@components/common";
-
-import { useTheme } from "./ThemeProvider";
 
 type TestingGenerateState = {
   isGenerating: boolean;
@@ -24,6 +27,7 @@ const Context = createContext<TestingGenerateContext>({
 });
 
 let uuidIndexRef: React.MutableRefObject<number>;
+let testServerSocket: WebSocket;
 
 export function TestingGenerateProvider({
   children,
@@ -33,27 +37,22 @@ export function TestingGenerateProvider({
   uuidIndexRef = useRef(0);
   const [state, setState] = useState<TestingGenerateState>(null);
   const { top } = useSafeAreaInsets();
-  const { colors } = useTheme();
 
   return (
     <Context.Provider value={{ state, setState }}>
       <>
-        {state && state.isGenerating && (
+        {state && (
           <View
             style={{
               position: "absolute",
-              backgroundColor: "red",
+              backgroundColor: state.isGenerating ? "red" : "gray",
               zIndex: 1,
               height: top,
               top: 0,
               width: "100%",
               alignItems: "center",
             }}
-          >
-            <Text color={colors.white} fontStyle="xSmall">
-              테스트를 위한 녹화중 입니다.
-            </Text>
-          </View>
+          />
         )}
 
         {children}
@@ -66,43 +65,58 @@ export function useTestingGenerate() {
   const { setState } = useContext(Context);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:9091");
+    testServerSocket = new WebSocket("ws://localhost:9091");
 
-    socket.onopen = (e) => {
-      console.log("onopen : " + JSON.stringify(e));
+    testServerSocket.addEventListener("open", function () {
+      console.log("[Test Generate] Connected test server");
       const createdAt = new Date().toISOString();
-      // state.isGenerating;
 
       uuidIndexRef.current = 0;
       setState({
-        isGenerating: false,
+        isGenerating: true,
         createdAt,
         version: "1.0.0",
       });
-    };
-    socket.onmessage = (e) => {
-      console.log("onmessage : " + JSON.stringify(e));
-    };
-    socket.onerror = (e) => {
-      console.log("onerror : " + JSON.stringify(e));
-    };
+    });
+
+    testServerSocket.addEventListener("message", function (e) {
+      const testServerAction = e.data as "start" | "pause" | "end";
+      switch (testServerAction) {
+        case "start":
+          setState((prev) => (prev ? { ...prev, isGenerating: true } : prev));
+          break;
+        case "pause":
+          setState((prev) => (prev ? { ...prev, isGenerating: false } : prev));
+          break;
+        case "end":
+          setState(null);
+          break;
+      }
+    });
+    testServerSocket.addEventListener("close", function () {
+      setState(null);
+    });
+    testServerSocket.addEventListener("error", function () {
+      setState(null);
+    });
   }, []);
 }
 
-export function useTestingGenerateGetUuid() {
+export function useTestingGenerateGetUuid(type: "press" | "typing") {
   const { state } = useContext(Context);
-  const [uuid, setUuid] = useState<string>();
 
-  useEffect(() => {
-    if (state && state.isGenerating) {
-      const uuidIndex = uuidIndexRef.current;
-      uuidIndexRef.current = uuidIndex + 1;
-      // v5(String(uuidIndex), state.createdAt)
-      setUuid(String(uuidIndex));
-    } else {
-      setUuid(undefined);
-    }
+  const uuid = useMemo(() => {
+    const id = `${type}-${uuidIndexRef.current++}`;
+    console.log("id : ", id);
+    return id;
   }, [state]);
 
-  return uuid;
+  const record = useCallback(() => {
+    if (state?.isGenerating) {
+      console.log(`[recode]: ${"action"} | ${uuid}`);
+      testServerSocket.send(JSON.stringify({ event: "action", type, uuid }));
+    }
+  }, [uuid, state?.isGenerating]);
+
+  return [uuid, record] as const;
 }

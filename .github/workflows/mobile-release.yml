@@ -1,0 +1,106 @@
+name: Mobile Release
+
+on:
+  create:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Setup repository
+        uses: actions/checkout@v3
+
+      - name: 👷 Build packages
+        run: yarn build
+
+      - name: A-1) 🏗 Create build command
+        id: build_command
+        run: echo '::set-output name=BUILD::$(eas build --wait --platform=all --profile=local --non-interactive --json)'
+
+      - name: B) 🚀 Build mobile
+        run: echo "BUILD_RESULT=$( echo ${{ steps.build_command.outputs.BUILD }} )" >> $GITHUB_ENV
+
+      - name: C) 🏗 Get appVersion
+        run: echo "APP_VERSION=$( echo $BUILD_RESULT | jq -r ".[0].appVersion" )" >> $GITHUB_ENV
+      - name: C-1) 🏗 Get appBuildVersion
+        run: echo "APP_BUILD_VERSION=$( echo $BUILD_RESULT | jq -r ".[0].appBuildVersion" )" >> $GITHUB_ENV
+      - name: C-2) 🏗 Get runtimeVersion
+        run: echo "RUNTIME_VERSION=$( echo $BUILD_RESULT | jq -r ".[0].runtimeVersion" )" >> $GITHUB_ENV
+      - name: C-3) 🏗 Get android URL
+        run: echo "ANDROID_URL=$( echo $BUILD_RESULT | jq -r ".[0].artifacts.buildUrl" )" >> $GITHUB_ENV
+      - name: C-4) 🏗 Get ios URL
+        run: echo "IOS_URL=$( echo $BUILD_RESULT | jq -r ".[1].artifacts.buildUrl" )" >> $GITHUB_ENV
+      - name: C-5) 🏗 Get distribution
+        run: echo "DISTRIBUTION=$( echo $BUILD_RESULT | jq -r ".[0].distribution" )" >> $GITHUB_ENV
+      - name: C-6) 🏗 Get project id
+        run: echo "PROJECT_ID=$( echo $BUILD_RESULT | jq -r ".[0].project.id" )" >> $GITHUB_ENV
+      - name: C-7) 🏗 Get android id
+        run: echo "ANDROID_ID=$( echo $BUILD_RESULT | jq -r ".[0].id" )" >> $GITHUB_ENV
+      - name: C-8) 🏗 Get ios id
+        run: echo "IOS_ID=$( echo $BUILD_RESULT | jq -r ".[1].id" )" >> $GITHUB_ENV
+
+      - name: D) 🏗 Download a ios build file
+        uses: suisei-cn/actions-download-file@v1.0.1
+        id: ios_build_file
+        with:
+          url: ${{ env.ANDROID_URL }}
+          target: raw/
+      - name: D-1) 🏗 Download a android build file
+        uses: suisei-cn/actions-download-file@v1.0.1
+        id: android_build_file
+        with:
+          url: ${{ env.IOS_URL }}
+          target: raw/
+
+      - name: E) 🏗 Zip ios build file
+        run: |
+          zip --junk-paths ios_artifact raw/${{ steps.ios_build_file.outputs.filename }}
+      - name: E-1) 🏗 Zip android build file
+        run: |
+          zip --junk-paths android_artifact raw/${{ steps.android_build_file.outputs.filename }}
+
+      - name: F) 🏗 Encode android QR Code
+        id: android_qr_code_image
+        uses: Ablestor/encode-uri-component-action@v1.3
+        with:
+          string: "https://expo.dev/accounts/spotlight-xam/projects/xam/builds/${{ env.ANDROID_ID }}"
+      - name: F-1) 🏗 Encode ios QR Code
+        id: ios_qr_code_image
+        uses: Ablestor/encode-uri-component-action@v1.3
+        with:
+          string: "itms-services://?action=download-manifest;url=https://api.expo.dev/v2/projects/${{ env.PROJECT_ID }}/builds/${{ env.IOS_ID }}/manifest.plist"
+
+      - name: G) 👀 Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            android_artifact.zip
+            ios_artifact.zip
+          body: |
+            **Expo EAS Build 성공! 🎉**
+
+            - Branch:             **local**
+            - App version:    **${{ env.APP_VERSION }}**
+            - App build version: **${{ env.APP_BUILD_VERSION }}**
+            - Runtime version: **${{ env.RUNTIME_VERSION }}**
+            - Platform:           **android, ios**
+            - Distribution:    **${{ env.DISTRIBUTION }}**
+            - Android URL:  **${{ env.ANDROID_URL }}**
+            - iOS URL:      **${{ env.IOS_URL }}**
+
+            local용 빌드가 완료 되었습니다.
+
+            ### android
+            ```
+            https://expo.dev/accounts/spotlight-xam/projects/xam/builds/${{ env.ANDROID_ID }}
+            ```
+            <img width="100px" src="https://github-readme-awesome.vercel.app/api/image?url=${{ steps.android_qr_code_image.outputs.string }}">
+
+            ### ios
+            ```
+            https://expo.dev/accounts/spotlight-xam/projects/xam/builds/${{ env.IOS_ID }}
+            ```
+            <img width="100px" src="https://github-readme-awesome.vercel.app/api/image?url=${{ steps.ios_qr_code_image.outputs.string }}">

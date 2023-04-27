@@ -1,7 +1,7 @@
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { Platform, Text } from "react-native";
 
-import { Icon, IconUnion } from "@components/common";
+import { Icon, IconUnion, Pressable } from "@components/common";
 import { MainStackNavigationProps } from "@navigation/main";
 import { colors } from "@theme";
 
@@ -34,6 +34,7 @@ export function createBottomTabNavigationOptions({
     navigation: MainStackNavigationProps;
   }): BottomTabNavigationOptions => ({
     headerShadowVisible: false,
+    tabBarButton: Pressable,
     tabBarIcon: ({ focused }) => (
       <Icon color={getColor(focused)} size={22} name={tabBarIcon} />
     ),

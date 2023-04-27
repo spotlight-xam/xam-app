@@ -7,12 +7,11 @@ import {
 import { useTestingGenerateGetUuid } from "@providers";
 
 export function Pressable(props: PressableProps) {
-  const testID = useTestingGenerateGetUuid();
+  const [testID, record] = useTestingGenerateGetUuid("press");
 
   const onPress = (event: GestureResponderEvent) => {
-    if (testID) {
-      console.log("[recode] id: " + testID);
-    }
+    record();
+
     props.onPress && props.onPress(event);
   };
 
