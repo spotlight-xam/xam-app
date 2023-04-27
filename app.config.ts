@@ -27,8 +27,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   const expoProjectId = "857462cb-9736-4060-8573-b6eab99f0e99";
 
-  const version = "1.0.0";
-  const buildNumber = 1;
+  const version = "1.0.1";
+  const buildNumber = 2;
 
   return {
     ...config,
