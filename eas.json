@@ -3,28 +3,22 @@
     "version": ">= 3.7.1"
   },
   "build": {
-    "local:simulator": {
-      "developmentClient": true,
-      "ios": { "simulator": true },
-      "env": { "APP_VARIANT": "local", "resourceClass": "m1-medium" },
-      "channel": "local"
-    },
     "local": {
       "developmentClient": true,
       "distribution": "internal",
       "env": { "APP_VARIANT": "local" },
       "channel": "local",
-      "ios": { "resourceClass": "m1-medium" }
+      "ios": { "resourceClass": "m-medium", "simulator": true }
     },
     "dev": {
       "distribution": "internal",
       "env": { "APP_VARIANT": "dev" },
       "channel": "dev",
-      "ios": { "resourceClass": "m1-medium" }
+      "ios": { "resourceClass": "m-medium" }
     },
     "production": {
       "env": { "APP_VARIANT": "production" },
-      "ios": { "resourceClass": "m1-medium" },
+      "ios": { "resourceClass": "m-medium" },
       "channel": "production"
     }
   },

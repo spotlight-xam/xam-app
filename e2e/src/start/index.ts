@@ -1,10 +1,8 @@
-import { downloadDevClientApp } from "./downloadDevClientApp";
+import { downloadDevClientApp, getExpoConfig } from "../common";
 
 async function start() {
-  // dev-client app check
-
-  // dev-client app download
-  await downloadDevClientApp();
+  const expoConfig = getExpoConfig();
+  await downloadDevClientApp(expoConfig);
 }
 
 start();

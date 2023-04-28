@@ -3,8 +3,13 @@ import { getKeyPressListener } from "./getKeyPressListener";
 import { KeyPressHandler } from "./keyPressHandler";
 import { runServer } from "./runServer";
 import { runTestServer } from "./runTestServer";
+import { downloadDevClientApp, getExpoConfig } from "../common";
 
 async function generate() {
+  const expoConfig = getExpoConfig();
+
+  await downloadDevClientApp(expoConfig);
+
   const { socket } = await runServer();
 
   const causalRecordManager = new CausalRecordManager();
