@@ -1,12 +1,34 @@
+import decompress from "decompress";
 import { https } from "follow-redirects";
 import * as fs from "fs";
 import ora from "ora";
 import * as path from "path";
-import * as unzipper from "unzipper";
 
 import { ExpoConfig } from "./getExpoConfig";
 
 const spinner = ora();
+
+const devClientFolderPath = path.join(process.cwd(), "e2e/dev-client");
+
+async function unzipperDevClientApp(): Promise<boolean> {
+  const zipFiles = fs
+    .readdirSync(devClientFolderPath)
+    .filter((file) => file.endsWith(".zip") || file.endsWith(".tar.gz"));
+
+  if (!zipFiles.length) return true;
+
+  await Promise.all(
+    zipFiles.map(async (file) => {
+      await decompress(
+        path.join(devClientFolderPath, file),
+        devClientFolderPath
+      );
+      fs.rmSync(path.join(devClientFolderPath, file));
+    })
+  );
+
+  return unzipperDevClientApp();
+}
 
 export async function downloadDevClientApp(expoConfig: ExpoConfig) {
   const { token, owner, repo, version } = expoConfig;
@@ -35,8 +57,6 @@ export async function downloadDevClientApp(expoConfig: ExpoConfig) {
     throw new Error("No assets found");
   }
 
-  const devClientFolderPath = path.join(process.cwd(), "e2e/dev-client");
-
   fs.rmSync(devClientFolderPath, { recursive: true, force: true });
 
   await Promise.all(
@@ -56,28 +76,17 @@ export async function downloadDevClientApp(expoConfig: ExpoConfig) {
             response.pipe(file);
             file.on("finish", () => {
               file.close();
-
-              if (asset.name.endsWith(".zip")) {
-                spinner.start("Unzipping...");
-
-                fs.createReadStream(path.join(devClientFolderPath, asset.name))
-                  .pipe(
-                    unzipper.Extract({ path: path.join(devClientFolderPath) })
-                  )
-                  .on("close", () => {
-                    fs.rmSync(path.join(devClientFolderPath, asset.name));
-                    resolve(true);
-                  })
-                  .on("error", (error) => reject(error));
-              } else {
-                resolve(true);
-              }
+              resolve(true);
             });
           })
           .on("error", (error) => reject(error));
       });
     })
   );
+
+  spinner.start("Unzipping...");
+
+  await unzipperDevClientApp();
 
   await Promise.all(
     fs.readdirSync(devClientFolderPath).map(
