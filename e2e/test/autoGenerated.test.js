@@ -19,32 +19,5 @@ describe("Home screen", () => {
     await expect(element(by.id("press-4"))).toBeVisible();
     await element(by.id("press-4")).tap();
 
-    await expect(element(by.id("press-5"))).toBeVisible();
-    await element(by.id("press-5")).tap();
-
-    await expect(element(by.id("press-7"))).toBeVisible();
-    await element(by.id("press-7")).tap();
-
-    await expect(element(by.id("press-8"))).toBeVisible();
-    await element(by.id("press-8")).tap();
-
-    await expect(element(by.id("press-7"))).toBeVisible();
-    await element(by.id("press-7")).tap();
-
-    await expect(element(by.id("press-11"))).toBeVisible();
-    await element(by.id("press-11")).tap();
-
-    await expect(element(by.id("press-6"))).toBeVisible();
-    await element(by.id("press-6")).tap();
-
-    await expect(element(by.id("press-5"))).toBeVisible();
-    await element(by.id("press-5")).tap();
-
-    await expect(element(by.id("press-7"))).toBeVisible();
-    await element(by.id("press-7")).tap();
-
-    await expect(element(by.id("press-12"))).toBeVisible();
-    await element(by.id("press-12")).tap();
-
   });
 });

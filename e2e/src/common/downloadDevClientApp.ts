@@ -39,18 +39,16 @@ export async function downloadDevClientApp(expoConfig: ExpoConfig) {
 
   spinner.start("Check dev-client in github release");
 
+  const releaseUri = `https://api.github.com/repos/${owner}/${repo}/releases/tags/${version}`;
+
   const res = await new Promise<{
     assets: { url: string; browser_download_url: string; name: string }[];
   }>((resolve) => {
-    https.get(
-      `https://api.github.com/repos/${owner}/${repo}/releases/tags/${version}`,
-      options,
-      (res) => {
-        let response = "";
-        res.on("data", (chunk) => (response += chunk));
-        res.on("end", () => resolve(JSON.parse(response)));
-      }
-    );
+    https.get(releaseUri, options, (res) => {
+      let response = "";
+      res.on("data", (chunk) => (response += chunk));
+      res.on("end", () => resolve(JSON.parse(response)));
+    });
   });
 
   if (!res?.assets?.length) {
@@ -104,6 +102,13 @@ export async function downloadDevClientApp(expoConfig: ExpoConfig) {
           );
         })
     )
+  );
+
+  const config = { version, releaseUri, date: new Date().toISOString() };
+
+  fs.writeFileSync(
+    path.join(devClientFolderPath, "config.json"),
+    JSON.stringify(config)
   );
 
   spinner.succeed("Download succeed");

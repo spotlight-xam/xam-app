@@ -3,12 +3,18 @@ import { getKeyPressListener } from "./getKeyPressListener";
 import { KeyPressHandler } from "./keyPressHandler";
 import { runServer } from "./runServer";
 import { runTestServer } from "./runTestServer";
-import { downloadDevClientApp, getExpoConfig } from "../common";
+import {
+  checkExistDevClientApp,
+  downloadDevClientApp,
+  getExpoConfig,
+} from "../common";
 
 async function generate() {
   const expoConfig = getExpoConfig();
 
-  await downloadDevClientApp(expoConfig);
+  if (!(await checkExistDevClientApp(expoConfig))) {
+    await downloadDevClientApp(expoConfig);
+  }
 
   const { socket } = await runServer();
 
