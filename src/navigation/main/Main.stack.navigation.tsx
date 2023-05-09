@@ -16,7 +16,6 @@ export type MainStackNavigationProps =
   NativeStackNavigationProp<MainStackNavigationParamsList>;
 export type MainStackNavigationParamsList = {
   MainDrawerNavigation: NavigatorScreenParams<MainDrawerNavigationParamsList>;
-
   MessageListScreen: main.message.MessageListScreenParams;
 };
 

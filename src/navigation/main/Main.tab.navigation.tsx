@@ -11,6 +11,7 @@ export type MainTabNavigationProps =
 export type MainTabNavigationParamsList = {
   MessageRoomListScreen: main.message.MessageRoomListScreenParams;
   PostListScreen: main.post.PostListScreenParams;
+  SettingListScreen: main.setting.SettingListScreenParams;
 };
 
 const Tab = createBottomTabNavigator<MainTabNavigationParamsList>();
@@ -29,6 +30,11 @@ export function MainTabNavigation() {
         name="PostListScreen"
         options={main.post.PostListScreenOptions}
         component={main.post.PostListScreen}
+      />
+      <Tab.Screen
+        name="SettingListScreen"
+        options={main.setting.SettingListScreenOptions}
+        component={main.setting.SettingListScreen}
       />
     </Tab.Navigator>
   );

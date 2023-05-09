@@ -33,7 +33,11 @@ export function Icon(props: IconProps) {
 
   return (
     <View style={style}>
-      <Component {...rest} color={color ?? colors.gray.dark} {...iconSize} />
+      <Component
+        {...rest}
+        color={color ?? colors.gray["accents-8"]}
+        {...iconSize}
+      />
     </View>
   );
 }

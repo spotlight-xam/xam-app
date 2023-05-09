@@ -3,7 +3,7 @@ import { Platform, Text } from "react-native";
 
 import { Icon, IconUnion, Pressable } from "@components/common";
 import { MainStackNavigationProps } from "@navigation/main";
-import { colors } from "@theme";
+import { useTheme } from "@providers";
 
 import { NavigationOptionHeaderTitle } from "./NavigationOptionHeaderTitle";
 import {
@@ -25,9 +25,6 @@ export function createBottomTabNavigationOptions({
   rightButtons,
   headerTitleAlign,
 }: CreateBottomTabNavigationOptionsProps) {
-  const getColor = (focused: boolean) =>
-    focused ? colors.gray.dark : colors.gray.bright1;
-
   return ({
     navigation,
   }: {
@@ -35,15 +32,27 @@ export function createBottomTabNavigationOptions({
   }): BottomTabNavigationOptions => ({
     headerShadowVisible: false,
     tabBarButton: Pressable,
-    tabBarIcon: ({ focused }) => (
-      <Icon color={getColor(focused)} size={22} name={tabBarIcon} />
-    ),
+    tabBarIcon: ({ focused }) => {
+      const { colors } = useTheme();
+
+      return (
+        <Icon
+          color={focused ? colors.gray["accents-8"] : colors.gray["accents-3"]}
+          size={22}
+          name={tabBarIcon}
+        />
+      );
+    },
     tabBarLabel: ({ focused }) => {
+      const { colors } = useTheme();
+
       return (
         <Text
           style={{
             fontSize: 12,
-            color: getColor(focused),
+            color: focused
+              ? colors.gray["accents-8"]
+              : colors.gray["accents-3"],
             paddingBottom: Platform.OS === "android" ? 4 : 0,
           }}
         >

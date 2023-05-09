@@ -5,8 +5,13 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { SplashScreen } from "@components/app";
 import { AppNavigation } from "@navigation/App.navigation";
-import { TestingGenerateProvider } from "@providers";
+import {
+  ModeProvider,
+  TestingGenerateProvider,
+  ThemeProvider,
+} from "@providers";
 import { queryClient, queryClientPersister } from "@queryClient/index";
+import { themes } from "@theme";
 
 if (
   Platform.OS === "android" &&
@@ -35,10 +40,14 @@ export default function App() {
         }}
       >
         <SafeAreaProvider>
-          <TestingGenerateProvider>
-            <StatusBar style="auto" />
-            <AppNavigation />
-          </TestingGenerateProvider>
+          <ModeProvider>
+            <ThemeProvider initTheme={themes.xam}>
+              <TestingGenerateProvider>
+                <StatusBar />
+                <AppNavigation />
+              </TestingGenerateProvider>
+            </ThemeProvider>
+          </ModeProvider>
         </SafeAreaProvider>
       </PersistQueryClientProvider>
     </SplashScreen>

@@ -11,7 +11,7 @@ import {
   fontStyles,
   fontWeights,
 } from "@constants";
-import { colors } from "@theme";
+import { useTheme } from "@providers";
 
 export interface TextProps extends _TextProps {
   fixed?: boolean;
@@ -52,11 +52,13 @@ export function Text({
   underline,
   style,
   enableNormalize,
-  color = colors.gray.dark,
+  color,
   fontStyle = "default",
   fontWeight = "medium",
   ...props
 }: TextProps) {
+  const { colors } = useTheme();
+
   const textStyle = useMemo(() => {
     const fontSize = fontStyles[fontStyle];
     return [{ fontSize }, { fontFamily: fontWeights[fontWeight] }];
@@ -81,7 +83,7 @@ export function Text({
       {...props}
       style={[
         textStyle,
-        { color },
+        { color: color || colors.gray["accents-8"] },
         style,
         underline && { textDecorationLine: "underline" },
       ]}

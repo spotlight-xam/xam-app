@@ -23,7 +23,7 @@ interface TestingGenerateContext {
 
 const Context = createContext<TestingGenerateContext>({
   state: null,
-  setState: () => console.log("Not implemented"),
+  setState: () => console.warn("Not implemented"),
 });
 
 let uuidIndexRef: React.MutableRefObject<number>;

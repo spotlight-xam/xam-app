@@ -3,6 +3,27 @@ import { ConfigContext, ExpoConfig } from "@expo/config";
 const APP_VARIANT: "production" | "dev" | "stage" | "local" =
   (process.env as any).APP_VARIANT || "production";
 
+const LIGHT_SPLASH = {
+  image: "./assets/splash.png",
+  resizeMode: "contain",
+  backgroundColor: "#ffffff",
+} as const;
+
+const DARK_SPLASH = {
+  image: "./assets/splash.png",
+  resizeMode: "contain",
+  backgroundColor: "#000000",
+} as const;
+
+const SHARED_SPLASH = {
+  splash: {
+    ...LIGHT_SPLASH,
+    dark: {
+      ...DARK_SPLASH,
+    },
+  },
+};
+
 export default ({ config }: ConfigContext): ExpoConfig => {
   const appName = {
     local: "Xam (local)",
@@ -40,25 +61,23 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     runtimeVersion: version,
     orientation: "portrait",
     icon: "./assets/icon.png",
-    userInterfaceStyle: "light",
+    userInterfaceStyle: "automatic",
     extra: { eas: { projectId: expoProjectId } },
-    splash: {
-      image: "./assets/splash.png",
-      resizeMode: "contain",
-      backgroundColor: "#ffffff",
-    },
+    splash: LIGHT_SPLASH,
     assetBundlePatterns: ["**/*"],
     updates: {
       url: `https://u.expo.dev/${expoProjectId}`,
       checkAutomatically: "ON_LOAD",
     },
     ios: {
+      ...SHARED_SPLASH,
       bundleIdentifier: bundleIdentifier[APP_VARIANT],
       supportsTablet: true,
       buildNumber: String(buildNumber),
       config: { usesNonExemptEncryption: false },
     },
     android: {
+      ...SHARED_SPLASH,
       package: bundleIdentifier[APP_VARIANT],
       versionCode: buildNumber,
       adaptiveIcon: {
