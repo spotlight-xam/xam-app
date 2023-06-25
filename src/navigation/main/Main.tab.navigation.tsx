@@ -9,6 +9,8 @@ import * as main from "@screens/main";
 export type MainTabNavigationProps =
   BottomTabNavigationProp<MainTabNavigationParamsList>;
 export type MainTabNavigationParamsList = {
+  HomeScreen: main.home.HomeScreenParams;
+  MemberListScreen: main.member.MemberListScreenParams;
   MessageRoomListScreen: main.message.MessageRoomListScreenParams;
   PostListScreen: main.post.PostListScreenParams;
   SettingListScreen: main.setting.SettingListScreenParams;
@@ -20,7 +22,17 @@ export const MainTabNavigationOptions: DrawerNavigationOptions = {
 };
 export function MainTabNavigation() {
   return (
-    <Tab.Navigator initialRouteName="PostListScreen">
+    <Tab.Navigator initialRouteName="HomeScreen">
+      <Tab.Screen
+        name="HomeScreen"
+        options={main.home.HomeScreenOptions}
+        component={main.home.HomeScreen}
+      />
+      <Tab.Screen
+        name="MemberListScreen"
+        options={main.member.MemberListScreenOptions}
+        component={main.member.MemberListScreen}
+      />
       <Tab.Screen
         name="MessageRoomListScreen"
         options={main.message.MessageRoomListScreenOptions}

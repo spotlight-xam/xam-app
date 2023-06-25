@@ -17,6 +17,7 @@ export interface IconProps extends SvgIconProps {
    * @summary 아이콘 사이즈
    *
    * @description 아이콘의 width와 height값을 이 값으로 설정합니다.
+   * @default 16
    */
   size?: number;
   style?: ViewStyle;

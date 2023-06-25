@@ -107,13 +107,11 @@ export function useTestingGenerateGetUuid(type: "press" | "typing") {
 
   const uuid = useMemo(() => {
     const id = `${type}-${uuidIndexRef.current++}`;
-    console.log("id : ", id);
     return id;
   }, [state]);
 
   const record = useCallback(() => {
     if (state?.isGenerating) {
-      console.log(`[recode]: ${"action"} | ${uuid}`);
       testServerSocket.send(JSON.stringify({ event: "action", type, uuid }));
     }
   }, [uuid, state?.isGenerating]);

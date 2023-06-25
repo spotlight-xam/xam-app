@@ -1,9 +1,9 @@
 export const fontWeightUnionList = [
-  "thin",
-  "light",
-  "medium",
-  "semiBold",
   "bold",
+  "semiBold",
+  "medium",
+  "light",
+  "thin",
 ] as const;
 export type FontWeightUnion = (typeof fontWeightUnionList)[number];
 export const fontWeights = {

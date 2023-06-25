@@ -5,6 +5,8 @@ import {
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 
+import { GroupDrawer } from "@components/group";
+
 import {
   MainTabNavigationParamsList,
   MainTabNavigation,
@@ -23,7 +25,7 @@ export const MainDrawerNavigationOptions: NativeStackNavigationOptions = {
 };
 export function MainDrawerNavigation() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator drawerContent={(props) => <GroupDrawer {...props} />}>
       <Drawer.Screen
         name="MainTabNavigation"
         component={MainTabNavigation}

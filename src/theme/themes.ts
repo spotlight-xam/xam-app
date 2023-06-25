@@ -3,7 +3,7 @@ import { getGrayColorByMode } from "./mode";
 import { ThemeContext } from "./types";
 
 const xam: ThemeContext = {
-  borderRadius: 5,
+  borderRadius: 30,
   colors: {
     ...colors,
     primary: colors.orange,

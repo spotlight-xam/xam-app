@@ -15,7 +15,7 @@
       "@assets/*": ["src/assets/*"],
       "@constants/*": ["src/constants/*"],
 
-      "@types": ["src/types"],
+      "@types": ["src/socket/types"],
       "@webSocket": ["src/webSocket"],
       "@fileManager": ["src/fileManager"],
       "@constants": ["src/constants"],

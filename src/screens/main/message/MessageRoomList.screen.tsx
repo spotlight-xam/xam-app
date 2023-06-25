@@ -1,27 +1,21 @@
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 
-import { Button } from "@components/common";
+import { MessageRoomList } from "@components/messageRoom";
 import { createBottomTabNavigationOptions } from "@helpers/navigation";
-import { useMainNavigation } from "@hooks/navigation";
+import { useTheme } from "@providers";
 
 export const MessageRoomListScreenOptions = createBottomTabNavigationOptions({
   tabBarIcon: "MessageIcon",
   tabBarLabel: "채팅",
-  headerTitle: "Xam",
+  headerTitle: "채팅 목록",
 });
 export type MessageRoomListScreenParams = undefined;
 export function MessageRoomListScreen() {
-  const navigation = useMainNavigation();
+  const { colors } = useTheme();
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-      edges={["bottom", "left", "right"]}
-    >
-      <Button
-        label="채팅방으로 이동"
-        onPress={() => navigation.navigate("MessageListScreen")}
-      />
-    </SafeAreaView>
+    <View style={{ flex: 1, backgroundColor: colors.gray.background }}>
+      <MessageRoomList />
+    </View>
   );
 }

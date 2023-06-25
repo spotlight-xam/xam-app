@@ -1,13 +1,13 @@
 export const fontStyleUnionList = [
-  "mini",
-  "xSmall",
-  "small",
-  "default",
-  "large",
-  "xLarge",
   "h1",
   "h2",
   "h3",
+  "xLarge",
+  "large",
+  "default",
+  "small",
+  "xSmall",
+  "mini",
 ] as const;
 export type FontStyleUnion = (typeof fontStyleUnionList)[number];
 export const fontStyles = {

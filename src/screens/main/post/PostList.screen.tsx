@@ -1,18 +1,21 @@
 import { View } from "react-native";
 
-import { Text } from "@components/common";
+import { PostList } from "@components/post";
 import { createBottomTabNavigationOptions } from "@helpers/navigation";
+import { useTheme } from "@providers";
 
 export const PostListScreenOptions = createBottomTabNavigationOptions({
   tabBarIcon: "NoticeIcon",
   tabBarLabel: "글",
-  headerTitle: "Xam",
+  headerTitle: "글 목록",
 });
 export type PostListScreenParams = undefined;
 export function PostListScreen() {
+  const { colors } = useTheme();
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>글 리스트!</Text>
+    <View style={{ flex: 1, backgroundColor: colors.gray.background }}>
+      <PostList />
     </View>
   );
 }

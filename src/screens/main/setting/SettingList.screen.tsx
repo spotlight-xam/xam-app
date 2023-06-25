@@ -1,7 +1,9 @@
 import { ScrollView } from "react-native";
 
-import { ListItem, ListItemTitle, Text } from "@components/common";
+import { ListItem, ListItemTitle } from "@components/common";
 import { createBottomTabNavigationOptions } from "@helpers/navigation";
+import { useMainNavigation } from "@hooks/navigation";
+import { useGlobalState } from "@hooks/queries/common";
 import { useTheme } from "@providers";
 
 export const SettingListScreenOptions = createBottomTabNavigationOptions({
@@ -11,7 +13,11 @@ export const SettingListScreenOptions = createBottomTabNavigationOptions({
 });
 export type SettingListScreenParams = undefined;
 export function SettingListScreen() {
-  const { colors, mode, setMode } = useTheme();
+  const navigation = useMainNavigation();
+  const { colors } = useTheme();
+
+  const [, setAccessToken] = useGlobalState<string>(["accessToken"], "");
+  const [, setRefreshToken] = useGlobalState<string>(["refreshToken"], "");
 
   return (
     <ScrollView
@@ -19,12 +25,19 @@ export function SettingListScreen() {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <ListItemTitle title="계정 설정" />
-      <ListItem icon="ExitIcon" title="로그아웃" onPress={() => {}} />
-
       <ListItem
-        title="mode"
-        onPress={() => setMode(mode === "dark" ? "light" : "dark")}
-        rightComponent={<Text>{mode}</Text>}
+        icon="ExitIcon"
+        title="로그아웃"
+        onPress={() => {
+          setAccessToken("");
+          setRefreshToken("");
+        }}
+      />
+
+      <ListItemTitle title="개발자 옵션" />
+      <ListItem
+        title="Test Screen"
+        onPress={() => navigation.navigate("TestHomeScreen")}
       />
     </ScrollView>
   );
